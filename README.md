@@ -1,4 +1,4 @@
-# Zhonglin Project2 Microservice Rust
+# Zhonglin Project3 Microservice Rust
 
 ## Key Objectives of Project
 In project 2, the main purpose is to build a functional Web Microservice using Rust based on Kubernetes and deploy and host it on AWS.
