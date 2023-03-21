@@ -10,4 +10,6 @@ The project will ask users to input a term that he/she want to learn about on wi
 
 ## 2. type something
 
+<img width="581" alt="image" src="https://user-images.githubusercontent.com/112585430/226752836-f84a9789-1d07-4b7c-9ac5-82541c1ff15b.png">
 
+<img width="581" alt="image" src="https://user-images.githubusercontent.com/112585430/226752975-14af77c3-82c6-458f-8762-ba0441880bc4.png">
