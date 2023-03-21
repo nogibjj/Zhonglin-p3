@@ -8,4 +8,6 @@ The project will ask users to input a term that he/she want to learn about on wi
 ## 1. `cargo run`
 <img width="581" alt="image" src="https://user-images.githubusercontent.com/112585430/226752530-02a54a96-4db0-4832-a2a1-ac5f0b9e781f.png">
 
-## 2. 
+## 2. type something
+
+
