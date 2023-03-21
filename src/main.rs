@@ -1,35 +1,35 @@
-use actix_web::{get, App, HttpResponse, HttpServer, Responder};
-//import the random fruit function from the lib.rs file
-use webdocker::random_movie;
+use std::io::{self, Write};
+use tokio::runtime::Runtime;
+use reqwest::header;
 
-//create a function that returns a hello world
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("This is a random best university of the US generator!")
-}
+fn main() {
+    let mut input = String::new();
+    print!("Enter a term to search on Wikipedia: ");
+    io::stdout().flush().unwrap();
+    io::stdin().read_line(&mut input).unwrap();
 
-//create a function that returns a random best movie
-#[get("/university")]
-async fn movie() -> impl Responder {
-    //print the random movie
-    println!("Random University: {}", random_movie());
-    HttpResponse::Ok().body(random_movie())
-}
+    let query = input.trim();
 
-//create a function that returns the version of the service
-#[get("/version")]
-async fn version() -> impl Responder {
-    //print the version of the service
-    println!("Version: {}", env!("CARGO_PKG_VERSION"));
-    HttpResponse::Ok().body(env!("CARGO_PKG_VERSION"))
-}
+    let url = format!("https://en.wikipedia.org/w/api.php?action=opensearch&search={}&format=json", query);
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    //add a print message to the console that the service is running
-    println!("Running the service");
-    HttpServer::new(|| App::new().service(hello).service(movie).service(version))
-        .bind("0.0.0.0:8080")?
-        .run()
-        .await
+    let rt = Runtime::new().unwrap();
+    rt.block_on(async {
+        let client = reqwest::Client::new();
+        let response = client.get(&url)
+            .header(header::USER_AGENT, "My Rust Wikipedia Searcher")
+            .send().await.unwrap()
+            .json::<serde_json::Value>().await.unwrap();
+
+        let results = response[1].as_array().unwrap();
+        let descriptions = response[2].as_array().unwrap();
+        let links = response[3].as_array().unwrap();
+
+        println!("Search results for '{}':", query);
+        for i in 0..results.len() {
+            println!("- Title: {}", results[i]);
+            println!("  Description: {}", descriptions[i]);
+            println!("  Link: {}", links[i]);
+            println!();
+        }
+    });
 }
